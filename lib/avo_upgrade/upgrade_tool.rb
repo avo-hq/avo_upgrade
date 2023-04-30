@@ -9,45 +9,53 @@ module AvoUpgrade
       end
     end
 
-    def resources_path
-      @resources_path ||= Rails.root.join("app", "avo", "resources")
+    def avo_global_files
+      Dir.glob(File.join(Rails.root.join("app", "avo"), '**/*')).select { |f| File.file?(f) } +
+      Dir.glob(File.join(Rails.root.join("app", "controllers", "avo"), '**/*')).select { |f| File.file?(f) } +
+      Dir.glob(File.join(Rails.root.join("app", "views", "avo"), '**/*')).select { |f| File.file?(f) }
+    end
+
+    def class_names_for(component)
+      names = []
+
+      Dir.glob(File.join(send("#{component}_path"), '**/*.rb')).each do |file|
+        # Match class definitions in the file
+        File.read(file).scan(/class\s+(\w+)/).each do |match|
+          # Add the matched class names to the list
+          names << match.first
+        end
+      end
+
+      names
+    end
+
+    # Dynamicly create path method for each component
+    # def resources_path, def actions_path, def filters_path, def resource_tools_path
+    [:resources, :actions, :filters, :resource_tools].each do |component|
+      define_method "#{component}_path" do
+        Rails.root.join("app", "avo", component.to_s)
+      end
+    end
+
+    def files_from(path)
+      Dir.glob("#{path}/*.rb").select { |file| File.file?(file) }
+    end
+
+    def replace_avo_global_text(hash)
+      avo_global_files.each do |file|
+        text = File.read(file)
+
+        hash.each do |old_text, new_text|
+          text.gsub!(old_text, new_text)
+        end
+
+        File.open(file, 'w') { |f| f.write(text) }
+      end
     end
 
     def replace_in_filename(old_text, new_text, path:)
       Dir.glob("#{path}/*.rb").each do |file_path|
         `git mv #{file_path} #{file_path.gsub(/#{old_text}/, new_text)}`
-      end
-    end
-
-    def replace_class_suffix(old_suffix, new_suffix, path:)
-      Dir.glob("#{path}/**/*#{old_suffix}.rb").each do |file_path|
-        new_file_path = file_path.gsub(/#{old_suffix}(\.rb)$/, "#{new_suffix}\\1")
-        FileUtils.mv(file_path, new_file_path)
-      end
-    end
-
-    def add_class_prefix(old_prefix, new_prefix, path:)
-      Dir.glob("#{path}/**/*.rb").each do |file_path|
-        file_content = File.read(file_path)
-        file_content.gsub!(/class #{old_prefix}/, "class #{new_prefix}")
-        File.write(file_path, file_content)
-      end
-    end
-
-    def remove_file_suffix(prefix, suffix, path:)
-      Dir.glob("#{path}/**/#{prefix}*#{suffix}.rb").each do |file_path|
-        new_file_path = file_path.gsub(/#{prefix}(.*)#{suffix}(\.rb)$/, "#{prefix}\\1\\2")
-        FileUtils.mv(file_path, new_file_path)
-      end
-    end
-
-    def replace_text(old_text, new_text)
-      ObjectSpace.each_object(Class).select { |klass| klass < self }.each do |subclass|
-        subclass.constants.each do |const|
-          if subclass.const_get(const) == old_text
-            subclass.const_set(const, new_text)
-          end
-        end
       end
     end
   end
