@@ -46,7 +46,7 @@ module AvoUpgrade
         text = File.read(file)
 
         hash.each do |old_text, new_text|
-          text.gsub!(old_text, new_text)
+          text.gsub!(/\b#{Regexp.escape(old_text)}\b/, new_text)
         end
 
         File.open(file, 'w') { |f| f.write(text) }
