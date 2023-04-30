@@ -11,7 +11,12 @@ module AvoUpgrade
         old_text_new_text_hash.merge! change_class_name_hash_for(component)
       end
 
-      replace_avo_global_text old_text_new_text_hash
+      replace_text_on(avo_global_files, old_text_new_text_hash)
+
+      remove_text = ["(resource:)", "(model_class:, id:, params:)", "(model_class:)"]
+      remove_text_on(files_from(resources_path) + files_from(actions_path) + files_from(filters_path), remove_text)
+
+      print "\n\nUpgrade to Avo 3.0 completed! 🚀\n\n"
     end
 
     private

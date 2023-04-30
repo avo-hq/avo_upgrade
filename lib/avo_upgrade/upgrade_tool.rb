@@ -41,16 +41,21 @@ module AvoUpgrade
       Dir.glob("#{path}/*.rb").select { |file| File.file?(file) }
     end
 
-    def replace_avo_global_text(hash)
-      avo_global_files.each do |file|
+    def replace_text_on(files, hash, exact_match: true)
+      files.each do |file|
         text = File.read(file)
 
         hash.each do |old_text, new_text|
-          text.gsub!(/\b#{Regexp.escape(old_text)}\b/, new_text)
+          old_text = /\b#{Regexp.escape(old_text)}\b/ if exact_match
+          text.gsub!(old_text, new_text)
         end
 
         File.open(file, 'w') { |f| f.write(text) }
       end
+    end
+
+    def remove_text_on(files, text_array)
+      replace_text_on(files, text_array.map { |text| [text, ""] }.to_h, exact_match: false)
     end
 
     def replace_in_filename(old_text, new_text, path:)
