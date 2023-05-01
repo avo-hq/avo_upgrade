@@ -5,7 +5,13 @@ module AvoUpgrade
   class UpgradeTool
     class << self
       def run
-        new.run
+        upgrade_tool = new
+        print upgrade_tool.summary
+        puts "Please make sure you commited all your changes before running this upgrade."
+        print "Do you want to run this upgrade? [y/n]: "
+        input = gets.chomp
+        return unless input == "y" || input == "Y"
+        upgrade_tool.run
       end
     end
 
@@ -30,8 +36,8 @@ module AvoUpgrade
     end
 
     # Dynamicly create path method for each component
-    # def resources_path, def actions_path, def filters_path, def resource_tools_path
-    [:resources, :actions, :filters, :resource_tools].each do |component|
+    # def resources_path, def actions_path, def filters_path, def resource_tools_path def dashboards_path, def cards_path
+    [:resources, :actions, :filters, :resource_tools, :dashboards, :cards].each do |component|
       define_method "#{component}_path" do
         Rails.root.join("app", "avo", component.to_s)
       end
