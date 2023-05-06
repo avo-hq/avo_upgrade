@@ -18,10 +18,30 @@ module AvoUpgrade
         old_text_new_text_hash.merge! change_class_name_hash_for(component)
       end
 
+      replace_text_on(files_from(actions_path), {"model" => "record"}, exact_match: false)
+      replace_text_on(
+        files_from(resources_path),
+        {
+          "model." => "record.",
+          "model_class." => "query.",
+          "scope." => "query.",
+        },
+        exact_match: false
+      )
       replace_text_on(avo_global_files, old_text_new_text_hash)
 
       # Remove arguments from the blocks
-      remove_text = ["(resource:)", "(model_class:, id:, params:)", "(model_class:)"]
+      remove_text = [
+        "(resource:)",
+        "(model_class:, id:, params:)",
+        "(model_class:)",
+        "(value)",
+        "|model|",
+        "|model, resource|",
+        "|model, resource, view|",
+        "|model, resource, view, field|",
+        "|model, &args|"
+      ]
       remove_text_on(files_from(resources_path) + files_from(actions_path) + files_from(filters_path), remove_text)
 
       print "\n\nUpgrade to Avo 3.0 completed! 🚀\n\n"
@@ -30,14 +50,23 @@ module AvoUpgrade
     def summary
       "This upgrade will:\n" +
       "- Remove the _resource suffix from all resource files\n" +
-      "- Replace the Avo::Dashboards:: namespace with AvoDashboards:: from all files\n" +
+      "- Replace the 'Avo::Dashboards::' namespace with 'AvoDashboards::' on all files\n" +
       "- Remove the arguments from the blocks in all resource, action and filter files\n" +
       "- Rename all ExampleResource to Avo::Resources::Example\n" +
       "- Rename all ExampleAction to Avo::Actions::ExampleAction\n" +
       "- Rename all ExampleFilter to Avo::Filters::ExampleFilter\n" +
       "- Rename all ExampleResourceTool to Avo::ResourceTools::ExampleResourceTool\n" +
       "- Rename all ExampleDashboard to Avo::Dashboards::ExampleDashboard\n" +
-      "- Rename all ExampleCard to Avo::Cards::ExampleCard\n\n"
+      "- Rename all ExampleCard to Avo::Cards::ExampleCard\n" +
+      "- Remove '(value)' from format_using in all resource files\n" +
+      "- Remove '|model|' in all resource files\n" +
+      "- Remove '|model, &args|' in all resource files\n" +
+      "- Remove '|model, resource|' in all resource files\n" +
+      "- Remove '|model, resource, view|' in all resource files\n" +
+      "- Remove '|model, resource, view, field|' in all resource files\n" +
+      "- Rename 'model_class.' with 'query.' in all resource files\n" +
+      "- Rename 'model.' with 'record.' in all resource files\n" +
+      "- Rename 'model' with 'record' in all action files\n\n"
     end
 
     private
