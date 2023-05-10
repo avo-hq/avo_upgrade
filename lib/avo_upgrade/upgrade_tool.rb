@@ -6,6 +6,8 @@ module AvoUpgrade
     class << self
       def run
         upgrade_tool = new
+        puts "DISCLAIMER: Please be aware that this is an automated upgrade and may make unintended changes to your files. We recommend that you carefully review all changes before committing them. While we have taken steps to ensure that the upgrade process is safe and reliable, there is always a possibility of unintended consequences. It is your responsibility to ensure that the modifications made by the upgrade are acceptable for your use case."
+        upgrade_tool.enter_to_continue
         print upgrade_tool.summary
         puts "Please make sure you commited all your changes before running this upgrade."
         print "Do you want to run this upgrade? [y/n]: "
@@ -66,8 +68,13 @@ module AvoUpgrade
 
     def replace_in_filename(old_text, new_text, path:)
       Dir.glob("#{path}/*.rb").each do |file_path|
-        `git mv #{file_path} #{file_path.gsub(/#{old_text}/, new_text)}`
+        `#{@mv_cmd == "1" ? "git mv" : "mv"} #{file_path} #{file_path.gsub(/#{old_text}/, new_text)}`
       end
+    end
+
+    def enter_to_continue
+      print "\nPress ENTER to continue."
+      gets.chomp
     end
   end
 end
