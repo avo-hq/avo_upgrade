@@ -1,8 +1,9 @@
 # AvoUpgrade
-Short description and motivation.
+
+Tiny upgrade helper for https://github.com/avo-hq/avo
 
 ## Usage
-How to use my plugin.
+For now, check out [this guide](https://docs.avohq.io/3.0/upgrade.html#use-the-automatic-upgrade-tool).
 
 ## Installation
 Add this line to your application's Gemfile:
