@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.homepage    = "https://avohq.io"
   spec.summary     = "The friendly upgrade helper for Avo."
   spec.description = "The friendly upgrade helper for Avo."
-  spec.license     = "MIT"
+  # spec.license     = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the "allowed_push_host"
   # to allow pushing to a single host or delete this section to allow pushing to any host.
