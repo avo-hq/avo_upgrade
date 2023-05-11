@@ -59,22 +59,23 @@ module AvoUpgrade
 
       # Print a summary of the upgrade process
       puts "\n\nSummary of changes:\n" +
-      "---------------------\n" +
-      "Renaming Avo::Dashboards:: to AvoDashboards::\n" +
-      "Renaming resources naming from ClassNameResource to Avo::Resources::ClassName\n" +
-      "Renaming actions naming from ClassName to Avo::Actions::ClassName\n" +
-      "Renaming filters naming from ClassName to Avo::Filters::ClassName\n" +
-      "Renaming resource tools naming from ClassName to Avo::ResourceTools::ClassName\n" +
-      "Renaming dashboards naming from ClassName to Avo::Dashboards::ClassName\n" +
-      "Renaming cards naming from ClassName to Avo::Cards::ClassName\n" +
-      "Renaming 'resolve_query_scope' method in resource files to 'index_query'\n" +
-      "Removing unused arguments from blocks in resource, action and filter files\n" +
-      "Updating resource and action files to use 'record' instead of 'model'\n" +
-      "Updating resource files to use 'query' instead of 'model_class' and 'scope'\n" +
-      "Renaming resource files to remove the '_resource' suffix\n" +
-      "  - We disponibilize 2 ways of renaming the resource files:\n" +
-      "    1. Using `git mv` command, that automaticly stage the changes and makes the commit review process easier.\n" +
-      "    2. Using `mv` command, that will rename the files without relying on any specific version control system. You will have to stage the changes manually.\n"
+        "---------------------\n" +
+        "Renaming Avo::Dashboards:: to AvoDashboards::\n" +
+        "Renaming resources naming from ClassNameResource to Avo::Resources::ClassName\n" +
+        "Renaming actions naming from ClassName to Avo::Actions::ClassName\n" +
+        "Renaming filters naming from ClassName to Avo::Filters::ClassName\n" +
+        "Renaming resource tools naming from ClassName to Avo::ResourceTools::ClassName\n" +
+        "Renaming dashboards naming from ClassName to Avo::Dashboards::ClassName\n" +
+        "Renaming cards naming from ClassName to Avo::Cards::ClassName\n" +
+        "Renaming 'resolve_query_scope' method in resource files to 'index_query'\n" +
+        "Removing unused arguments from blocks in resource, action and filter files\n" +
+        "Updating resource and action files to use 'record' instead of 'model'\n" +
+        "Updating resource files to use 'query' instead of 'model_class' and 'scope'\n" +
+        "Renaming resource files to remove the '_resource' suffix\n" +
+        "\n" +
+        "  - There are 2 ways of renaming the resource files:\n" +
+        "    1. Using `git mv` command, that automaticly stage the changes and makes the commit review process easier.\n" +
+        "    2. Using `mv` command, that will rename the files without relying on any specific version control system. You will have to stage the changes manually.\n"
       @mv_cmd = nil
       while @mv_cmd != "1" && @mv_cmd != "2"
         print "  Choose the one you prefer (1 or 2) and press enter: "
@@ -95,10 +96,10 @@ module AvoUpgrade
       puts "\nCards: \n -#{cards_names.join("\n -")}\n"
       enter_to_continue
       puts "\nThis upgrade will NOT:\n" +
-      "- Apply the `def fields` and `def cards` API\n" +
-      "- Remove the argument from lambda functions if they are not as we specify them on docs.\n" +
-      "- Remove the index_text_align option\n" +
-      "- Swap disabled with readonly\n\n"
+        "- Apply the `def fields` and `def cards` API\n" +
+        "- Remove the argument from lambda functions if they are not as we specify them on docs.\n" +
+        "- Remove the index_text_align option\n" +
+        "- Swap disabled with readonly\n\n"
     end
 
     private
