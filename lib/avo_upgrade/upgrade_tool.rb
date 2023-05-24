@@ -66,6 +66,17 @@ module AvoUpgrade
       replace_text_on(files, text_array.map { |text| [text, ""] }.to_h, exact_match: false)
     end
 
+    def remove_block_arg_on(files, text_array)
+      match_array = text_array.map do |text|
+        if proc_arg?(text)
+          proc_arg_match_params(text)
+        else
+          lambda_arg_match_params(text)
+        end
+      end
+      replace_text_on(files, match_array.to_h, exact_match: false)
+    end
+
     def replace_in_filename(old_text, new_text, path:)
       Dir.glob("#{path}/*.rb").each do |file_path|
         `#{@mv_cmd == "1" ? "git mv" : "mv"} #{file_path} #{file_path.gsub(/#{old_text}/, new_text)}`
@@ -75,6 +86,26 @@ module AvoUpgrade
     def enter_to_continue
       print "\nPress ENTER to continue."
       gets.chomp
+    end
+
+    private
+
+    def proc_arg?(text)
+      /\|/.match?(text)
+    end
+
+    def lambda_arg_match_params(proc_arg_text)
+      [
+        /->\s*#{Regexp.escape(proc_arg_text)}/,
+        '->'
+      ]
+    end
+
+    def proc_arg_match_params(lambda_arg_text)
+      [
+        /\b#{Regexp.escape(lambda_arg_text)}\b/,
+        ''
+      ]
     end
   end
 end

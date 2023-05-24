@@ -43,7 +43,7 @@ module AvoUpgrade
         "|model, resource, view, field|",
         "|model, &args|"
       ]
-      remove_text_on(files_from(resources_path) + files_from(actions_path) + files_from(filters_path), remove_text)
+      remove_block_arg_on(files_from(resources_path) + files_from(actions_path) + files_from(filters_path), remove_text)
 
       print "\n\nUpgrade to Avo 3.0 completed! 🚀\n\n"
     end
