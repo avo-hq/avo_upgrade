@@ -41,6 +41,7 @@ module AvoUpgrade
         "|model, resource|",
         "|model, resource, view|",
         "|model, resource, view, field|",
+        "(model:, resource:, view:, field:)",
         "|model, &args|"
       ]
       remove_block_arg_on(files_from(resources_path) + files_from(actions_path) + files_from(filters_path), remove_text)
