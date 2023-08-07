@@ -5,7 +5,7 @@ module AvoUpgrade
       replace_in_filename "_resource", "", path: resources_path
 
       # Replace all "Avo::Dashboards::" with "AvoDashboards::" in all files
-      replace_text_on(avo_global_files, { "Avo::Dashboards::" => "AvoDashboards::" }, exact_match: false)
+      # replace_text_on(avo_global_files, { "Avo::Dashboards::" => "Avo::Dashboards::" }, exact_match: false)
 
       # Create a hash with old class names as keys and new class names as values
       # Example: { "Avo::Resources::UserResource" => "Avo::Resources::User" }
@@ -60,7 +60,7 @@ module AvoUpgrade
       # Print a summary of the upgrade process
       puts "\n\nSummary of changes:\n" +
         "---------------------\n" +
-        "Renaming Avo::Dashboards:: to AvoDashboards::\n" +
+        # "Renaming Avo::Dashboards:: to AvoDashboards::\n" +
         "Renaming resources naming from ClassNameResource to Avo::Resources::ClassName\n" +
         "Renaming actions naming from ClassName to Avo::Actions::ClassName\n" +
         "Renaming filters naming from ClassName to Avo::Filters::ClassName\n" +
