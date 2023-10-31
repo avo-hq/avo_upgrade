@@ -106,6 +106,8 @@ GEM
     nio4r (2.5.9)
     nokogiri (1.14.3-arm64-darwin)
       racc (~> 1.4)
+    nokogiri (1.14.3-x86_64-linux)
+      racc (~> 1.4)
     racc (1.6.2)
     rack (2.2.7)
     rack-test (2.1.0)
@@ -138,6 +140,7 @@ GEM
       zeitwerk (~> 2.5)
     rake (13.0.6)
     sqlite3 (1.6.2-arm64-darwin)
+    sqlite3 (1.6.2-x86_64-linux)
     thor (1.2.1)
     timeout (0.3.2)
     tzinfo (2.0.6)
@@ -150,6 +153,7 @@ GEM
 PLATFORMS
   arm64-darwin-21
   arm64-darwin-22
+  x86_64-linux
 
 DEPENDENCIES
   avo_upgrade!
