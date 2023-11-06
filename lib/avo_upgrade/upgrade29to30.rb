@@ -46,6 +46,8 @@ module AvoUpgrade
       ]
       remove_block_arg_on(files_from(resources_path) + files_from(actions_path) + files_from(filters_path), remove_text)
 
+      remove_config("config.tabs_style")
+
       print "\n\nUpgrade to Avo 3.0 completed! 🚀\n\n"
     end
 
@@ -73,6 +75,7 @@ module AvoUpgrade
         "Updating resource and action files to use 'record' instead of 'model'\n" +
         "Updating resource files to use 'query' instead of 'model_class' and 'scope'\n" +
         "Renaming resource files to remove the '_resource' suffix\n" +
+        "Removing the `config.tabs_style` from the avo initializer\n" +
         "\n" +
         "  - There are 2 ways of renaming the resource files:\n" +
         "    1. Using `git mv` command, that automaticly stage the changes and makes the commit review process easier.\n" +

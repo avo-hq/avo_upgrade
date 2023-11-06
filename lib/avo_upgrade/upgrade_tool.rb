@@ -88,6 +88,27 @@ module AvoUpgrade
       gets.chomp
     end
 
+    # Receives the code at the beginning of a line and deletes the line.
+    def remove_config(config)
+      avo_config_path = File.join Rails.root.join("config", "initializers", "avo.rb")
+
+      # Read the content of the file into an array of lines
+      lines = File.readlines(avo_config_path)
+
+      # Open the file for writing
+      File.open(avo_config_path, "w") do |file|
+        lines.each do |line|
+          # Check if the line starts with the given config code
+          if line.strip.start_with?(config)
+            # Do nothing, skip the line
+          else
+            # Write the line to the file
+            file.puts(line)
+          end
+        end
+      end
+    end
+
     private
 
     def proc_arg?(text)
