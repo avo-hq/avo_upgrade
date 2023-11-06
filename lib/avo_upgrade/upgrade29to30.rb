@@ -7,6 +7,18 @@ module AvoUpgrade
       # Replace all "Avo::Dashboards::" with "AvoDashboards::" in all files
       # replace_text_on(avo_global_files, { "Avo::Dashboards::" => "Avo::Dashboards::" }, exact_match: false)
 
+      replace_text_on(
+        avo_global_files,
+        {
+          "Avo::Dashboards::BaseCard" => "Avo::Cards::BaseCard",
+          "Avo::Dashboards::BaseDivider" => "Avo::Cards::BaseDivider",
+          "Avo::Dashboards::ChartkickCard" => "Avo::Cards::ChartkickCard",
+          "Avo::Dashboards::MetricCard" => "Avo::Cards::MetricCard",
+          "Avo::Dashboards::PartialCard" => "Avo::Cards::PartialCard",
+        },
+        exact_match: false
+      )
+
       # Create a hash with old class names as keys and new class names as values
       # Example: { "Avo::Resources::UserResource" => "Avo::Resources::User" }
       old_text_new_text_hash = class_names_for(:resources).map do |class_name|
@@ -70,6 +82,7 @@ module AvoUpgrade
         "Renaming resource tools naming from ClassName to Avo::ResourceTools::ClassName\n" +
         "Renaming dashboards naming from ClassName to Avo::Dashboards::ClassName\n" +
         "Renaming cards naming from ClassName to Avo::Cards::ClassName\n" +
+        "Changing cards namespace from Dashboards to Cards\n" +
         "Renaming 'resolve_query_scope' method in resource files to 'index_query'\n" +
         "Removing unused arguments from blocks in resource, action and filter files\n" +
         "Updating resource and action files to use 'record' instead of 'model'\n" +
